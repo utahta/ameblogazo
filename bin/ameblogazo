@@ -10,6 +10,7 @@ op = OptionParser.new do |opt|
   opt.on('-d DIR', '--dir=DIR', '画像の保存先ディレクトリを指定') {|v| opts[:dir] = v }
   opt.on('-c TYPE', '--categorize=TYPE', ['title', 'date'], 'カテゴライズ(title or date)を指定') {|v| opts[:categorize] = v }
   opt.on('-n NUM', '--num=NUM', '画像の枚数を指定。指定がないと全て取得') {|v| opts[:num] = v }
+  opt.on('-p', '--periodic', 'ダウンロード済みの画像が見つかるまで取得') {|v| opts[:periodic] = v }
 
   opt.parse!
 end
@@ -18,4 +19,8 @@ if opts.empty?
   exit
 end
 
-Ameblogazo.download(opts)
+if opts[:periodic]
+  Ameblogazo.download_periodic(opts)
+else
+  Ameblogazo.download(opts)
+end
