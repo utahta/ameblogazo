@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+
+require "ameblogazo"
+require "optparse"
+
+opts = {}
+op = OptionParser.new do |opt|
+  opt.on('-i ID', '--ameba-id=ID', 'アメーバIDを指定') {|v| opts[:ameba_id] = v }
+  opt.on('-d DIR', '--dir=DIR', '画像の保存先ディレクトリを指定') {|v| opts[:dir] = v }
+  opt.on('-c TYPE', '--categorize=TYPE', ['title', 'date'], 'カテゴライズ(title or date)を指定') {|v| opts[:categorize] = v }
+  opt.on('-n NUM', '--num=NUM', '画像の枚数を指定。指定がないと全て取得') {|v| opts[:num] = v }
+
+  opt.parse!
+end
+if opts.empty?
+  puts op
+  exit
+end
+
+Ameblogazo.download(opts)
