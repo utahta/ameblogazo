@@ -1,0 +1,36 @@
+= Ameblogazo
+
+アメーバブログの画像のダウンロードを簡単にしてくれるツールとライブラリ。
+
+== Installing
+
+ gem install ameblogazo
+
+dependencies: nokogiri
+
+== Using tool
+
+画像を全てダウンロード
+ ameblogazo -i ameba_id -d /tmp -c date
+
+画像を新しいものから10個ダウンロード
+ ameblogazo -i ameba_id -d /tmp -c date -n 10
+
+オプションの説明
+ -i アメーバIDを指定
+ -d 保存先ディレクトリを指定
+ -c カテゴライズ設定(title or date)。デフォルトは無効。titleは記事タイトル毎に分類。dateは日付で分類。
+ -n ダウンロードする画像の枚数を指定
+ -p まだダウンロードしてない画像だけダウンロードする
+
+== Using library
+
+サンプル
+ require 'ameblogazo'
+ Ameblogazo.download(:ameba_id=>'ameba_id', :dir=>'/tmp', :categorize=>'date', :num=>10)
+ Ameblogazo.download_periodic(:ameba_id=>'ameba_id', :dir=>'/tmp', :categorize=>'date')
+
+== Copyright
+
+Copyright (c) 2012 utahta. See LICENSE.txt for
+further details.

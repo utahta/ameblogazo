@@ -19,8 +19,12 @@ if opts.empty?
   exit
 end
 
-if opts[:periodic]
-  Ameblogazo.download_periodic(opts)
-else
-  Ameblogazo.download(opts)
+begin
+  if opts[:periodic]
+    Ameblogazo.download_periodic(opts)
+  else
+    Ameblogazo.download(opts)
+  end
+rescue => ex
+  puts ex.message
 end

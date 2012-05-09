@@ -30,15 +30,16 @@ module Ameblogazo
     
     # 一番最初の画像のURLを取得する
     def _find_image_url(ameba_id)
+      puts "検索中..."
       image_url = nil
-      page = 1
       catch :image_found do
-        loop do
+        100.times do |i|
+          page = i+1
           url = "http://ameblo.jp/#{ameba_id}/page-#{page}.html"
           begin
             html = open(url)
           rescue
-            raise GazoException, "画像が見つからないです"
+            raise GazoException, "画像が見つからなかったです"
           end
           doc = Nokogiri::HTML(html)
           
@@ -49,12 +50,12 @@ module Ameblogazo
               throw :image_found
             end
           end
-          page += 1 # 次のページへ
+          sleep(0.1)
         end
       end
       # 念のためチェック
       if image_url.nil?
-        raise GazoException, "画像がみつからないです"
+        raise GazoException, "画像がみつからなかったです"
       end
       image_url
     end
