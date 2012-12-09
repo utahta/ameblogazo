@@ -3,28 +3,27 @@
 
 require "ameblogazo"
 require "optparse"
+require "headless"
 
-opts = {}
-op = OptionParser.new do |opt|
-  opt.on('-i ID', '--ameba-id=ID', 'アメーバIDを指定') {|v| opts[:ameba_id] = v}
-  opt.on('-d DIR', '--dir=DIR', '画像の保存先ディレクトリを指定') {|v| opts[:dir] = v}
-  opt.on('-c TYPE', '--categorize=TYPE', ['title', 'date'], 'カテゴライズ(title or date)を指定') {|v| opts[:categorize] = v}
-  opt.on('-n NUM', '--num=NUM', '画像の枚数を指定。指定がないと全て取得') {|v| opts[:num] = v}
-  opt.on('-p', '--periodic', 'ダウンロード済みの画像が見つかるまで取得') {|v| opts[:periodic] = v}
-
-  opt.parse!
-end
-if opts.empty?
-  puts op
-  exit
-end
-
-begin
-  if opts[:periodic]
-    Ameblogazo.download_periodic(opts)
-  else
-    Ameblogazo.download(opts)
-  end
-rescue => ex
-  puts ex.message
+Headless.ly do
+    opts = {}
+    op = OptionParser.new do |opt|
+      opt.on('-i ID', '--ameba-id=ID', 'アメーバIDを指定') {|v| opts[:ameba_id] = v}
+      opt.on('-d DIR', '--dir=DIR', '画像の保存先ディレクトリを指定') {|v| opts[:dir] = v}
+      opt.on('-c TYPE', '--categorize=TYPE', ['title', 'date'], 'カテゴライズ(title, date)を指定') {|v| opts[:categorize] = v}
+      opt.on('-n NUM', '--num=NUM', '画像の枚数を指定') {|v| opts[:num] = v}
+      opt.on('-s', '--selenium', 'selenium driverを使用') {|v| opts[:selenium] = true}
+      
+      opt.parse!
+    end
+    if opts.empty?
+      puts op
+      exit
+    end
+    
+    begin
+      Ameblogazo.download(opts)
+    rescue => ex
+      puts ex.message
+    end
 end

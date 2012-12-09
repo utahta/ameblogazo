@@ -1,34 +1,34 @@
 = Ameblogazo
 
-アメーバブログの画像のダウンロードを簡単にしてくれるツールとライブラリ。
+アメーバブログの画像をダウンロードするツールとライブラリ。
 
 == Installing
 
  gem install ameblogazo
 
-dependencies: nokogiri
+dependencies: capybara, capybara-webkit, headless
+require: qt-devel qt-webkit-devel > 4.7, Xvfb
 
-== Using tool
+== Using
 
-画像を全てダウンロード
- ameblogazo -i ameba_id -d /tmp -c date
+画像を最新のものから指定枚数だけダウンロード
+ ameblogazo -i ameba_id -d /tmp -n 10
 
-画像を新しいものから10個ダウンロード
- ameblogazo -i ameba_id -d /tmp -c date -n 10
+指定した場所に保存されている画像と同一のものが見つかるまでダウンロード
+ ameblogazo -i ameba_id -d /tmp
 
 オプションの説明
  -i アメーバIDを指定
  -d 保存先ディレクトリを指定
  -c カテゴライズ設定(title or date)。デフォルトは無効。titleは記事タイトル毎に分類。dateは日付で分類。
- -n ダウンロードする画像の枚数を指定
- -p まだダウンロードしてない画像だけダウンロードする
+ -n 画像の枚数を指定
+ -s SeleniumDriverを使用
 
-== Using library
+== Library
 
 サンプル
  require 'ameblogazo'
- Ameblogazo.download(:ameba_id=>'ameba_id', :dir=>'/tmp', :categorize=>'date', :num=>10)
- Ameblogazo.download_periodic(:ameba_id=>'ameba_id', :dir=>'/tmp', :categorize=>'date')
+ Ameblogazo.download(:ameba_id=>'ameba_id', :dir=>'/tmp', :num=>10, :selenium=>true)
 
 == Copyright
 
